@@ -72,13 +72,13 @@ def validar_usuario(request, login, password):
 @csrf_exempt
 def enviar_pedido(request):
 	if request.method == 'POST':
-		pedido_data = str(request.body)[2:-1]
-		pedido_data2 = json.loads(pedido_data)
+		#pedido_data = str(request.body)[2:-1]
+		#pedido_data2 = json.loads(pedido_data)
 
 
 
 
 
-		return HttpResponse(pedido_data)
+		return HttpResponse(request.body)
 
 	return HttpResponse("no data")
