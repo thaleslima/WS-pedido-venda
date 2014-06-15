@@ -1,6 +1,10 @@
 from django.db import models
 
 # Create your models here.
+class Mesa(models.Model):
+	descricao = models.CharField(max_length=255)
+	status = models.IntegerField()
+	tipo = models.IntegerField()
 
 class Categoria(models.Model):
 	descricao = models.CharField(max_length=255)
@@ -19,6 +23,7 @@ class Produto(models.Model):
 class Pedido(models.Model):
 	numeroComanda = models.CharField(max_length=20)
 	status = models.IntegerField()
+	mesa = models.ForeignKey(Mesa)
 
 	def __unicode__(self):
 		return "Pedido: " + str(self.id)

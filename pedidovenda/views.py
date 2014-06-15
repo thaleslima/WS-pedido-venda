@@ -9,6 +9,7 @@ from pedidovenda.models import Categoria
 from pedidovenda.models import Produto
 from pedidovenda.models import Pedido
 from pedidovenda.models import ItemPedido
+from pedidovenda.models import Mesa
 
 # Create your views here.
 def listar_produtos(request):
@@ -35,25 +36,21 @@ def listar_produtos(request):
 	return HttpResponse(json.dumps(categorias), content_type = "application/json; charset=utf-8")
 
 
-def get_commands(request):
-	commands = []
+def listar_mesas(request):
+	mesas_list = Mesa.objects.all()
+	mesas = []
+	for item in mesas_list:
+		mesa = {}
+		mesa['id'] = item.id
+		mesa['descricao'] = item.descricao
+		mesa['status'] = item.status
+		mesa['tipo'] = item.tipo
+		
+		mesas.append(mesa)
 
+	return HttpResponse(json.dumps(mesas), content_type = "application/json; charset=utf-8")
 
-	for x in range(1, 30):
-		command = {}
-		command['id'] = x
-		command['name'] = format(x, '02d')
-
-		command['status'] = 1
-
-		if x == 3 or x == 7 or x == 21 or x == 6:
-			command['status'] = 2
-
-		commands.append(command)
-
-	return HttpResponse(json.dumps(commands), content_type = "application/json; charset=utf-8")
-
-def login_user(request, login, password):
+def validar_usuario(request, login, password):
 	if request.method == 'GET':
 		if login == "admin" and password == "123":
 			data = {}
