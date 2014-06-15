@@ -23,16 +23,17 @@ class ProdutoAdmin(admin.ModelAdmin):
 	get_name.short_description = 'Categoria'  #Renames column head
 
 
+class MesaAdmin(admin.ModelAdmin):
+	list_display = ('id', 'descricao', 'status', 'tipo')
+
+
 class PedidoAdmin(admin.ModelAdmin):
-	list_display = ('id', 'numeroComanda', 'status')
+	list_display = ('id', 'status')
 
 
 class ItemPedidoAdmin(admin.ModelAdmin):
 	list_display = ('id', 'quantidade', 'observacao', 'status', 'valorTotal')
-
-
-class MesaAdmin(admin.ModelAdmin):
-	list_display = ('id', 'descricao', 'status', 'tipo')
+	
 
 admin.site.register(Produto,ProdutoAdmin)
 admin.site.register(Pedido,PedidoAdmin)

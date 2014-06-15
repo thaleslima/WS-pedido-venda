@@ -5,6 +5,8 @@ class Mesa(models.Model):
 	descricao = models.CharField(max_length=255)
 	status = models.IntegerField()
 	tipo = models.IntegerField()
+	def __unicode__(self):
+		return self.descricao
 
 class Categoria(models.Model):
 	descricao = models.CharField(max_length=255)
@@ -21,7 +23,7 @@ class Produto(models.Model):
 		return self.descricao
 
 class Pedido(models.Model):
-	numeroComanda = models.CharField(max_length=20)
+	text = models.CharField(max_length=255)
 	status = models.IntegerField()
 	mesa = models.ForeignKey(Mesa)
 
