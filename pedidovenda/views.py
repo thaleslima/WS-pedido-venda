@@ -11,6 +11,9 @@ from pedidovenda.models import Pedido
 from pedidovenda.models import ItemPedido
 from pedidovenda.models import Mesa
 
+from django.views.decorators.csrf import csrf_exempt
+from django.utils import simplejson
+
 # Create your views here.
 def listar_produtos(request):
 	categoria_list = Categoria.objects.all()
@@ -66,3 +69,16 @@ def validar_usuario(request, login, password):
 	data['message'] = "Usuario nao cadastrado."
 	return HttpResponse(json.dumps(data), content_type = "application/json; charset=utf-8")
 
+@csrf_exempt
+def enviar_pedido(request):
+	if request.method == 'POST':
+		pedido_data = str(request.body)[2:-1]
+		pedido_data2 = json.loads(pedido_data)
+
+
+
+
+
+		return HttpResponse(pedido_data)
+
+	return HttpResponse("no data")
