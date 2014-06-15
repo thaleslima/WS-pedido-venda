@@ -23,7 +23,6 @@ class Produto(models.Model):
 		return self.descricao
 
 class Pedido(models.Model):
-	text = models.CharField(max_length=255)
 	status = models.IntegerField()
 	mesa = models.ForeignKey(Mesa)
 
