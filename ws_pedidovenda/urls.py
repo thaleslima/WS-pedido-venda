@@ -10,7 +10,7 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
 
-    (r'^lvalidar-usuario/(?P<login>\w+)/(?P<password>\w+)$', 'pedidovenda.views.validar_usuario'),
+    (r'^validar-usuario/$', 'pedidovenda.views.validar_usuario'),
     (r'^listar-produtos/$', 'pedidovenda.views.listar_produtos'),
     (r'^listar-mesas/$', 'pedidovenda.views.listar_mesas'),
     (r'^enviar-pedido/$', 'pedidovenda.views.enviar_pedido'),

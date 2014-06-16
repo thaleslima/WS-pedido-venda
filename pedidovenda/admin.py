@@ -6,6 +6,7 @@ from pedidovenda.models import Produto
 from pedidovenda.models import Pedido
 from pedidovenda.models import ItemPedido
 from pedidovenda.models import Mesa
+from pedidovenda.models import Usuario
 
 from django.contrib import admin
 
@@ -35,8 +36,13 @@ class ItemPedidoAdmin(admin.ModelAdmin):
 	list_display = ('id', 'quantidade', 'observacao', 'status', 'valorTotal')
 	
 
+class UsuarioAdmin(admin.ModelAdmin):
+	list_display = ('id', 'nome', 'email', 'login', 'senha')
+	
+	
 admin.site.register(Produto,ProdutoAdmin)
 admin.site.register(Pedido,PedidoAdmin)
 admin.site.register(ItemPedido,ItemPedidoAdmin)
 admin.site.register(Categoria, CategoriaAdmin)
 admin.site.register(Mesa, MesaAdmin)
+admin.site.register(Usuario, UsuarioAdmin)

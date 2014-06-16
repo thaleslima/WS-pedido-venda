@@ -10,6 +10,7 @@ from pedidovenda.models import Produto
 from pedidovenda.models import Pedido
 from pedidovenda.models import ItemPedido
 from pedidovenda.models import Mesa
+from pedidovenda.models import Usuario
 
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import simplejson
@@ -53,21 +54,38 @@ def listar_mesas(request):
 
 	return HttpResponse(json.dumps(mesas), content_type = "application/json; charset=utf-8")
 
-def validar_usuario(request, login, password):
-	if request.method == 'GET':
-		if login == "admin" and password == "123":
-			data = {}
-			data['id'] = 1
-			data['name'] = "Admin"
-			data['email'] = "admin@admin.com"
-			data['login'] = login
-			return HttpResponse(json.dumps(data), content_type = "application/json")
+@csrf_exempt
+def validar_usuario(request):
+	if request.method == 'POST':
+		usuario_data = str(request.body)[2:-1]
+		usuario_data2 = json.loads(usuario_data)
 
-	data = {}
+		data = {}
+
+		try:
+			usuario = Usuario.objects.get(login = usuario_data2['login'])
+
+			if usuario.senha == usuario_data2['senha']:
+				data['id'] = usuario.id
+				data['nome'] = usuario.nome
+				data['email'] = usuario.email
+				data['login'] = usuario.login
+
+				data['sucesso'] = True
+				data['mensagem'] = ""
+			else:
+				data['sucesso'] = False
+				data['mensagem'] = "A senha informada nao e valida. Verifique e tente novamente."
+			
+
+		except Exception:
+			data['sucesso'] = False
+			data['mensagem'] = "Usuario nao encontrado. Verifique e tente novamente."
+
+		
+		return HttpResponse(json.dumps(data), content_type = "application/json")	
 	
-	data['status'] = "Fail"
-	data['message'] = "Usuario nao cadastrado."
-	return HttpResponse(json.dumps(data), content_type = "application/json; charset=utf-8")
+	return HttpResponse()
 
 
 @csrf_exempt
@@ -101,9 +119,10 @@ def adicionar_item_pedido(request):
 		pedido = Pedido.objects.get(id = pedido_data2['numero'])
 
 		for item in pedido_data2['itensPedido']:
-			produto = Produto.objects.get(id = item['produto']['id'])
-			itemPedido = ItemPedido(quantidade = item['quantidade'], observacao = item['observacao'], status = 2, valorTotal = item['valorTotal'], pedido = pedido, produto = produto)
-			itemPedido.save()
+			if item.status == 1:
+				produto = Produto.objects.get(id = item['produto']['id'])
+				itemPedido = ItemPedido(quantidade = item['quantidade'], observacao = item['observacao'], status = 2, valorTotal = item['valorTotal'], pedido = pedido, produto = produto)
+				itemPedido.save()
 
 		return HttpResponse(json.dumps(retornar_pedido_completo(mesa.id)), content_type = "application/json")
 	return HttpResponse("no data")

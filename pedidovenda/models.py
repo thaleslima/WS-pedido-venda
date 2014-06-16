@@ -8,11 +8,13 @@ class Mesa(models.Model):
 	def __unicode__(self):
 		return self.descricao
 
+
 class Categoria(models.Model):
 	descricao = models.CharField(max_length=255)
 
 	def __unicode__(self):
 		return self.descricao
+
 
 class Produto(models.Model):
 	descricao = models.CharField(max_length=255)
@@ -21,6 +23,7 @@ class Produto(models.Model):
 
 	def __unicode__(self):
 		return self.descricao
+
 
 class Pedido(models.Model):
 	status = models.IntegerField()
@@ -40,3 +43,13 @@ class ItemPedido(models.Model):
 
 	def __unicode__(self):
 		return "Item: " + str(self.id)
+
+
+class Usuario(models.Model):
+	nome = models.CharField(max_length=255)
+	email = models.CharField(max_length=255)
+	login = models.CharField(max_length=255)
+	senha = models.CharField(max_length=255)
+
+	def __unicode__(self):
+		return self.nome
