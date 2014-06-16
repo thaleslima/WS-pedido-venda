@@ -116,10 +116,11 @@ def adicionar_item_pedido(request):
 		pedido_data = str(request.body)[2:-1]
 		pedido_data2 = json.loads(pedido_data)
 
+		mesa = Mesa.objects.get(id = pedido_data2['idMesa'])
 		pedido = Pedido.objects.get(id = pedido_data2['numero'])
 
 		for item in pedido_data2['itensPedido']:
-			if item.status == 1:
+			if item['status'] == 1:
 				produto = Produto.objects.get(id = item['produto']['id'])
 				itemPedido = ItemPedido(quantidade = item['quantidade'], observacao = item['observacao'], status = 2, valorTotal = item['valorTotal'], pedido = pedido, produto = produto)
 				itemPedido.save()
