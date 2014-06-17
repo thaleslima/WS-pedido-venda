@@ -98,12 +98,12 @@ def enviar_pedido(request):
 		mesa.status = 2
 		mesa.save()
 
-		pedido = Pedido(status = 1, mesa = mesa)
+		pedido = Pedido(status = 1, mesa = mesa, valorTotal = pedido_data2['valorTotal'], codigoAtendente = pedido_data2['codigoAtendente'])
 		pedido.save()
 
 		for item in pedido_data2['itensPedido']:
 			produto = Produto.objects.get(id = item['produto']['id'])
-			itemPedido = ItemPedido(quantidade = item['quantidade'], observacao = item['observacao'], status = 2, valorTotal = item['valorTotal'], pedido = pedido, produto = produto)
+			itemPedido = ItemPedido(quantidade = item['quantidade'], observacao = item['observacao'], status = 1, valorUnit = item['valorUnit'], valorTotalItem = item['valorTotalItem'], pedido = pedido, produto = produto)
 			itemPedido.save()
 
 		return HttpResponse(json.dumps(retornar_pedido_completo(mesa.id)), content_type = "application/json")
@@ -120,9 +120,9 @@ def adicionar_item_pedido(request):
 		pedido = Pedido.objects.get(id = pedido_data2['numero'])
 
 		for item in pedido_data2['itensPedido']:
-			if item['status'] == 1:
+			if item['status'] == 0:
 				produto = Produto.objects.get(id = item['produto']['id'])
-				itemPedido = ItemPedido(quantidade = item['quantidade'], observacao = item['observacao'], status = 2, valorTotal = item['valorTotal'], pedido = pedido, produto = produto)
+				itemPedido = ItemPedido(quantidade = item['quantidade'], observacao = item['observacao'], status = 1, valorUnit = item['valorUnit'], valorTotalItem = item['valorTotalItem'], pedido = pedido, produto = produto)
 				itemPedido.save()
 
 		return HttpResponse(json.dumps(retornar_pedido_completo(mesa.id)), content_type = "application/json")
@@ -141,6 +141,8 @@ def retornar_pedido_completo(id_mesa):
 	pedido_response['numero'] = pedido.id
 	pedido_response['status'] = pedido.status
 	pedido_response['idMesa'] = mesa.id
+	pedido_response['valorTotal'] = pedido.valorTotal
+	pedido_response['codigoAtendente'] = pedido.codigoAtendente
 
 	itensPedido = []
 
@@ -150,7 +152,8 @@ def retornar_pedido_completo(id_mesa):
 		itemPedido_response['quantidade'] = item.quantidade
 		itemPedido_response['observacao'] = item.observacao
 		itemPedido_response['status'] = item.status
-		itemPedido_response['valorTotal'] = float(item.valorTotal)
+		itemPedido_response['valorUnit'] = float(item.valorUnit)
+		itemPedido_response['valorTotalItem'] = float(item.valorTotalItem)
 		itemPedido_response['produto'] = {}
 		itemPedido_response['produto']['id'] = item.produto.id
 		itemPedido_response['produto']['descricao'] = item.produto.descricao

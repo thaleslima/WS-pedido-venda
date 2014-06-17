@@ -29,11 +29,11 @@ class MesaAdmin(admin.ModelAdmin):
 
 
 class PedidoAdmin(admin.ModelAdmin):
-	list_display = ('id', 'status')
+	list_display = ('id', 'valorTotal', 'codigoAtendente', 'status')
 
 
 class ItemPedidoAdmin(admin.ModelAdmin):
-	list_display = ('id', 'quantidade', 'observacao', 'status', 'valorTotal')
+	list_display = ('id', 'quantidade', 'observacao', 'status', 'valorUnit', 'valorTotalItem')
 	
 
 class UsuarioAdmin(admin.ModelAdmin):

@@ -28,6 +28,8 @@ class Produto(models.Model):
 class Pedido(models.Model):
 	status = models.IntegerField()
 	mesa = models.ForeignKey(Mesa)
+	valorTotal = models.DecimalField(max_digits=5, decimal_places=2)
+	codigoAtendente = models.IntegerField()
 
 	def __unicode__(self):
 		return "Pedido: " + str(self.id)
@@ -37,7 +39,8 @@ class ItemPedido(models.Model):
 	quantidade = models.IntegerField()
 	observacao = models.CharField(max_length=255)
 	status = models.IntegerField()
-	valorTotal = models.DecimalField(max_digits=5, decimal_places=2)
+	valorUnit = models.DecimalField(max_digits=5, decimal_places=2)
+	valorTotalItem = models.DecimalField(max_digits=5, decimal_places=2)
 	pedido = models.ForeignKey(Pedido)
 	produto = models.ForeignKey(Produto)
 
