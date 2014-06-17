@@ -141,7 +141,7 @@ def retornar_pedido_completo(id_mesa):
 	pedido_response['numero'] = pedido.id
 	pedido_response['status'] = pedido.status
 	pedido_response['idMesa'] = mesa.id
-	pedido_response['valorTotal'] = pedido.valorTotal
+	pedido_response['valorTotal'] = float(pedido.valorTotal)
 	pedido_response['codigoAtendente'] = pedido.codigoAtendente
 
 	itensPedido = []
