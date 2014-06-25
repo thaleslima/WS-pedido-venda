@@ -155,32 +155,34 @@ def listar_pedido_mesa(request, id_mesa):
 
 def retornar_pedido_completo(id_mesa):
 	mesa = Mesa.objects.get(id=id_mesa)
-	pedido = Pedido.objects.filter(mesa = mesa, status = 1)
+	listPedido = Pedido.objects.filter(mesa = mesa, status = 1)
 
 	pedido_response = {}
-	pedido_response['numero'] = pedido.id
-	pedido_response['status'] = pedido.status
-	pedido_response['idMesa'] = mesa.id
-	pedido_response['valorTotal'] = float(pedido.valorTotal)
-	pedido_response['codigoAtendente'] = pedido.codigoAtendente
 
-	itensPedido = []
+	for pedido in listPedido:
+		pedido_response['numero'] = pedido.id
+		pedido_response['status'] = pedido.status
+		pedido_response['idMesa'] = mesa.id
+		pedido_response['valorTotal'] = float(pedido.valorTotal)
+		pedido_response['codigoAtendente'] = pedido.codigoAtendente
 
-	itemPedido_list = ItemPedido.objects.filter(pedido=pedido)
-	for item in itemPedido_list:
-		itemPedido_response = {}
-		itemPedido_response['quantidade'] = item.quantidade
-		itemPedido_response['observacao'] = item.observacao
-		itemPedido_response['status'] = item.status
-		itemPedido_response['valorUnit'] = float(item.valorUnit)
-		itemPedido_response['valorTotalItem'] = float(item.valorTotalItem)
-		itemPedido_response['produto'] = {}
-		itemPedido_response['produto']['id'] = item.produto.id
-		itemPedido_response['produto']['descricao'] = item.produto.descricao
-		itemPedido_response['produto']['valor'] = float(item.produto.valor)
-		itemPedido_response['produto']['idCategoria'] = item.produto.categoria.id
+		itensPedido = []
 
-		itensPedido.append(itemPedido_response)
-	pedido_response['itensPedido'] = itensPedido
+		itemPedido_list = ItemPedido.objects.filter(pedido=pedido)
+		for item in itemPedido_list:
+			itemPedido_response = {}
+			itemPedido_response['quantidade'] = item.quantidade
+			itemPedido_response['observacao'] = item.observacao
+			itemPedido_response['status'] = item.status
+			itemPedido_response['valorUnit'] = float(item.valorUnit)
+			itemPedido_response['valorTotalItem'] = float(item.valorTotalItem)
+			itemPedido_response['produto'] = {}
+			itemPedido_response['produto']['id'] = item.produto.id
+			itemPedido_response['produto']['descricao'] = item.produto.descricao
+			itemPedido_response['produto']['valor'] = float(item.produto.valor)
+			itemPedido_response['produto']['idCategoria'] = item.produto.categoria.id
+
+			itensPedido.append(itemPedido_response)
+		pedido_response['itensPedido'] = itensPedido
 
 	return pedido_response
