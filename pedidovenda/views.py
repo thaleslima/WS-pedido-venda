@@ -109,9 +109,10 @@ def enviar_pedido(request):
 		return HttpResponse(json.dumps(retornar_pedido_completo(mesa.id)), content_type = "application/json")
 	return HttpResponse("no data")
 
+
 @csrf_exempt
 def fechar_pedido(request):
-	if request.method == 'PUT':
+	if request.method == 'POST':
 		pedido_data = str(request.body)[2:-1]
 		pedido_data2 = json.loads(pedido_data)
 
