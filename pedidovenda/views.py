@@ -109,6 +109,26 @@ def enviar_pedido(request):
 		return HttpResponse(json.dumps(retornar_pedido_completo(mesa.id)), content_type = "application/json")
 	return HttpResponse("no data")
 
+@csrf_exempt
+def fechar_pedido(request):
+	if request.method == 'PUT':
+		pedido_data = str(request.body)[2:-1]
+		pedido_data2 = json.loads(pedido_data)
+
+		mesa = Mesa.objects.get(id = pedido_data2['idMesa'])
+		mesa.status = 1
+		mesa.save()
+
+		pedido = Pedido.objects.get(id = pedido_data2['numero'])
+		pedido.status = 2
+		pedido.save()
+
+		pedido_response = {}
+		pedido_response['status'] = "OK"
+
+		return HttpResponse(json.dumps(pedido_response), content_type = "application/json")
+	return HttpResponse("no data")
+
 
 @csrf_exempt
 def adicionar_item_pedido(request):
@@ -135,7 +155,7 @@ def listar_pedido_mesa(request, id_mesa):
 
 def retornar_pedido_completo(id_mesa):
 	mesa = Mesa.objects.get(id=id_mesa)
-	pedido = Pedido.objects.get(mesa = mesa)
+	pedido = Pedido.objects.filter(mesa = mesa, status = 1)
 
 	pedido_response = {}
 	pedido_response['numero'] = pedido.id
