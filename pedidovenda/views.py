@@ -111,6 +111,22 @@ def enviar_pedido(request):
 
 
 @csrf_exempt
+def abrir_mesa(request):
+	if request.method == 'POST':
+		mesa_data = str(request.body)[2:-1]
+		mesa_data = json.loads(mesa_data)
+
+		mesa_data['status'] = 2
+
+		mesa = Mesa.objects.get(id = mesa_data['id'])
+		mesa.status = 2
+		mesa.save()
+
+		return HttpResponse(json.dumps(mesa_data), content_type = "application/json")
+	return HttpResponse("no data")
+
+
+@csrf_exempt
 def fechar_pedido(request):
 	if request.method == 'POST':
 		pedido_data = str(request.body)[2:-1]
@@ -120,9 +136,12 @@ def fechar_pedido(request):
 		mesa.status = 1
 		mesa.save()
 
-		pedido = Pedido.objects.get(id = pedido_data2['numero'])
-		pedido.status = 2
-		pedido.save()
+		try:
+			pedido = Pedido.objects.get(id = pedido_data2['numero'])
+			pedido.status = 2
+			pedido.save()
+		except Exception:
+			pass
 
 		pedido_response = {}
 		pedido_response['status'] = "OK"

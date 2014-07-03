@@ -18,4 +18,5 @@ urlpatterns = patterns('',
 	(r'^adicionar-item-pedido/$', 'pedidovenda.views.adicionar_item_pedido'),
 	(r'^listar-pedido-mesa/(?P<id_mesa>\w+)$', 'pedidovenda.views.listar_pedido_mesa'),
     (r'^fechar-pedido/$', 'pedidovenda.views.fechar_pedido'),
+    (r'^abrir-mesa/$', 'pedidovenda.views.abrir_mesa'),
 )
