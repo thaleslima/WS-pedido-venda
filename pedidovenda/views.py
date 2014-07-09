@@ -205,4 +205,12 @@ def retornar_pedido_completo(id_mesa):
 			itensPedido.append(itemPedido_response)
 		pedido_response['itensPedido'] = itensPedido
 
-	return pedido_response
+	table_response = {}
+	table_response = {}
+	table_response['id'] = mesa.id
+	table_response['descricao'] = mesa.descricao
+	table_response['status'] = mesa.status
+	table_response['tipo'] = mesa.tipo
+	table_response['pedido'] = pedido_response
+
+	return table_response
